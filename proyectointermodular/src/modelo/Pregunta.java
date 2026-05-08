@@ -1,3 +1,5 @@
+package modelo;
+
 import java.util.ArrayList;
 
 public class Pregunta {
@@ -5,9 +7,8 @@ public class Pregunta {
 	private String pregunta;
 	private ArrayList<String> opciones;
 	private String respuesta;
-	
+
 	public Pregunta(String pregunta, ArrayList<String> opciones, String respuesta) {
-		super();
 		this.pregunta = pregunta;
 		this.opciones = opciones;
 		this.respuesta = respuesta;
@@ -41,7 +42,5 @@ public class Pregunta {
 	public String toString() {
 		return "Pregunta [pregunta=" + pregunta + ", opciones=" + opciones + ", respuesta=" + respuesta + "]";
 	}
-	
-	
-	
+
 }
