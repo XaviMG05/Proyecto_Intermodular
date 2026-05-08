@@ -6,8 +6,8 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/bson-4.10.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/mongodb-driver-core-4.10.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Usuario/Desktop/mongodb-driver-sync-4.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/javie/OneDrive/Desktop/Proyecto_Intermodular/Librerías MongoDB/bson-4.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/javie/OneDrive/Desktop/Proyecto_Intermodular/Librerías MongoDB/mongodb-driver-core-4.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/javie/OneDrive/Desktop/Proyecto_Intermodular/Librerías MongoDB/mongodb-driver-sync-4.10.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
