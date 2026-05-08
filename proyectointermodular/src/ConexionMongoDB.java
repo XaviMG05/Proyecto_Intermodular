@@ -14,92 +14,128 @@ import java.util.List;
 
 public class ConexionMongoDB {
 
+	public static void main(String[] args) {
+        // Direccion de la BBDD en MongoDB
+        String uri = "mongodb+srv://jsricop:Practica3enRayaBBDDyProg@futbol3raya.jnutj7r.mongodb.net/";
+
+        // Conexion
+        try  {       	
+        	MongoClient mongoClient = MongoClients.create(uri);
+            
+        	// Base de datos y coleccion
+            MongoDatabase database = mongoClient.getDatabase("Concursillo");
+            MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas");
+            
+            
+            reiniciarColecciones(collectionPreguntas);
+            insertarPreguntas(collectionPreguntas);
+
+            // Leer jugadores
+            FindIterable<Document> jugadores = collectionPreguntas.find();
+            for (Document jugador : jugadores) {
+                System.out.println(jugador.getString("nombre"));
+            }
+            System.out.println("--------------------- Preguntas mostradas--------------------- ");
+            
+           
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
+	// Metodo para limpiar las colecciones
+    public static void reiniciarColecciones(MongoCollection<Document> collectionPreguntas) {
+    	collectionPreguntas.deleteMany(new Document()); // Elimina todas las preguntas
+   
+    }
+     
+    //Metodo para insertar preguntas
     public static void insertarPreguntas(MongoCollection<Document> collectionPreguntas) {
  	collectionPreguntas.insertMany(Arrays.asList(
 
-            new Document("pregunta", "¿Cuál es el planeta más grande del sistema solar?")
-                .append("opciones", Arrays.asList("Marte", "Júpiter", "Saturno", "Venus"))
-                .append("respuesta", "Júpiter"),
+        new Document("pregunta", "¿Cuál es el planeta más grande del sistema solar?")
+            .append("opciones", Arrays.asList("Marte", "Júpiter", "Saturno", "Venus"))
+            .append("respuesta", "Júpiter"),
 
-            new Document("pregunta", "¿Quién pintó la Mona Lisa?")
-                .append("opciones", Arrays.asList("Van Gogh", "Picasso", "Leonardo da Vinci", "Dalí"))
-                .append("respuesta", "Leonardo da Vinci"),
+        new Document("pregunta", "¿Quién pintó la Mona Lisa?")
+            .append("opciones", Arrays.asList("Van Gogh", "Picasso", "Leonardo da Vinci", "Dalí"))
+            .append("respuesta", "Leonardo da Vinci"),
 
-            new Document("pregunta", "¿Cuál es la capital de Australia?")
-                .append("opciones", Arrays.asList("Sídney", "Melbourne", "Canberra", "Perth"))
-                .append("respuesta", "Canberra"),
+        new Document("pregunta", "¿Cuál es la capital de Australia?")
+            .append("opciones", Arrays.asList("Sídney", "Melbourne", "Canberra", "Perth"))
+            .append("respuesta", "Canberra"),
 
-            new Document("pregunta", "¿En qué continente está Egipto?")
-                .append("opciones", Arrays.asList("Asia", "Europa", "África", "Oceanía"))
-                .append("respuesta", "África"),
+        new Document("pregunta", "¿En qué continente está Egipto?")
+            .append("opciones", Arrays.asList("Asia", "Europa", "África", "Oceanía"))
+            .append("respuesta", "África"),
 
-            new Document("pregunta", "¿Cuál es el océano más grande del mundo?")
-                .append("opciones", Arrays.asList("Atlántico", "Índico", "Ártico", "Pacífico"))
-                .append("respuesta", "Pacífico"),
+        new Document("pregunta", "¿Cuál es el océano más grande del mundo?")
+            .append("opciones", Arrays.asList("Atlántico", "Índico", "Ártico", "Pacífico"))
+            .append("respuesta", "Pacífico"),
 
-            new Document("pregunta", "¿Quién escribió Don Quijote de la Mancha?")
-                .append("opciones", Arrays.asList("Cervantes", "Lope de Vega", "García Lorca", "Quevedo"))
-                .append("respuesta", "Cervantes"),
+        new Document("pregunta", "¿Quién escribió Don Quijote de la Mancha?")
+            .append("opciones", Arrays.asList("Cervantes", "Lope de Vega", "García Lorca", "Quevedo"))
+            .append("respuesta", "Cervantes"),
 
-            new Document("pregunta", "¿Cuál es el símbolo químico del oro?")
-                .append("opciones", Arrays.asList("Ag", "Au", "Fe", "O"))
-                .append("respuesta", "Au"),
+        new Document("pregunta", "¿Cuál es el símbolo químico del oro?")
+            .append("opciones", Arrays.asList("Ag", "Au", "Fe", "O"))
+            .append("respuesta", "Au"),
 
-            new Document("pregunta", "¿Cuántos lados tiene un hexágono?")
-                .append("opciones", Arrays.asList("5", "6", "7", "8"))
-                .append("respuesta", "6"),
+        new Document("pregunta", "¿Cuántos lados tiene un hexágono?")
+            .append("opciones", Arrays.asList("5", "6", "7", "8"))
+            .append("respuesta", "6"),
 
-            new Document("pregunta", "¿Qué país ganó el Mundial de 2010?")
-                .append("opciones", Arrays.asList("Brasil", "Alemania", "España", "Italia"))
-                .append("respuesta", "España"),
+        new Document("pregunta", "¿Qué país ganó el Mundial de 2010?")
+            .append("opciones", Arrays.asList("Brasil", "Alemania", "España", "Italia"))
+            .append("respuesta", "España"),
 
-            new Document("pregunta", "¿Cuál es el idioma más hablado del mundo?")
-                .append("opciones", Arrays.asList("Inglés", "Español", "Chino mandarín", "Hindi"))
-                .append("respuesta", "Chino mandarín"),
+        new Document("pregunta", "¿Cuál es el idioma más hablado del mundo?")
+            .append("opciones", Arrays.asList("Inglés", "Español", "Chino mandarín", "Hindi"))
+            .append("respuesta", "Chino mandarín"),
 
-            new Document("pregunta", "¿Qué gas necesitan las plantas para la fotosíntesis?")
-                .append("opciones", Arrays.asList("Oxígeno", "Nitrógeno", "CO2", "Helio"))
-                .append("respuesta", "CO2"),
+        new Document("pregunta", "¿Qué gas necesitan las plantas para la fotosíntesis?")
+            .append("opciones", Arrays.asList("Oxígeno", "Nitrógeno", "CO2", "Helio"))
+            .append("respuesta", "CO2"),
 
-            new Document("pregunta", "¿Cuál es la montaña más alta del mundo?")
-                .append("opciones", Arrays.asList("K2", "Everest", "Mont Blanc", "Aconcagua"))
-                .append("respuesta", "Everest"),
+        new Document("pregunta", "¿Cuál es la montaña más alta del mundo?")
+            .append("opciones", Arrays.asList("K2", "Everest", "Mont Blanc", "Aconcagua"))
+            .append("respuesta", "Everest"),
 
-            new Document("pregunta", "¿Quién fue el primer hombre en la Luna?")
-                .append("opciones", Arrays.asList("Armstrong", "Gagarin", "Aldrin", "Collins"))
-                .append("respuesta", "Armstrong"),
+        new Document("pregunta", "¿Quién fue el primer hombre en la Luna?")
+            .append("opciones", Arrays.asList("Armstrong", "Gagarin", "Aldrin", "Collins"))
+            .append("respuesta", "Armstrong"),
 
-            new Document("pregunta", "¿Cuál es el río más largo del mundo?")
-                .append("opciones", Arrays.asList("Amazonas", "Nilo", "Danubio", "Misisipi"))
-                .append("respuesta", "Nilo"),
+        new Document("pregunta", "¿Cuál es el río más largo del mundo?")
+            .append("opciones", Arrays.asList("Amazonas", "Nilo", "Danubio", "Misisipi"))
+            .append("respuesta", "Nilo"),
 
-            new Document("pregunta", "¿Qué instrumento mide la temperatura?")
-                .append("opciones", Arrays.asList("Barómetro", "Termómetro", "Higrómetro", "Altímetro"))
-                .append("respuesta", "Termómetro"),
+        new Document("pregunta", "¿Qué instrumento mide la temperatura?")
+            .append("opciones", Arrays.asList("Barómetro", "Termómetro", "Higrómetro", "Altímetro"))
+            .append("respuesta", "Termómetro"),
 
-            new Document("pregunta", "¿Cuál es el país más grande del mundo?")
-                .append("opciones", Arrays.asList("China", "EEUU", "Canadá", "Rusia"))
-                .append("respuesta", "Rusia"),
+        new Document("pregunta", "¿Cuál es el país más grande del mundo?")
+            .append("opciones", Arrays.asList("China", "EEUU", "Canadá", "Rusia"))
+            .append("respuesta", "Rusia"),
 
-            new Document("pregunta", "¿Quién formuló la teoría de la relatividad?")
-                .append("opciones", Arrays.asList("Newton", "Einstein", "Tesla", "Galileo"))
-                .append("respuesta", "Einstein"),
+        new Document("pregunta", "¿Quién formuló la teoría de la relatividad?")
+            .append("opciones", Arrays.asList("Newton", "Einstein", "Tesla", "Galileo"))
+            .append("respuesta", "Einstein"),
 
-            new Document("pregunta", "¿Cuál es el hueso más largo del cuerpo humano?")
-                .append("opciones", Arrays.asList("Tibia", "Fémur", "Húmero", "Radio"))
-                .append("respuesta", "Fémur"),
+        new Document("pregunta", "¿Cuál es el hueso más largo del cuerpo humano?")
+            .append("opciones", Arrays.asList("Tibia", "Fémur", "Húmero", "Radio"))
+            .append("respuesta", "Fémur"),
 
-            new Document("pregunta", "¿En qué país está la Torre Eiffel?")
-                .append("opciones", Arrays.asList("Italia", "Francia", "Alemania", "España"))
-                .append("respuesta", "Francia"),
+        new Document("pregunta", "¿En qué país está la Torre Eiffel?")
+            .append("opciones", Arrays.asList("Italia", "Francia", "Alemania", "España"))
+            .append("respuesta", "Francia"),
 
-            new Document("pregunta", "¿Cuál es el planeta rojo?")
-                .append("opciones", Arrays.asList("Venus", "Marte", "Mercurio", "Neptuno"))
-                .append("respuesta", "Marte"),
+        new Document("pregunta", "¿Cuál es el planeta rojo?")
+            .append("opciones", Arrays.asList("Venus", "Marte", "Mercurio", "Neptuno"))
+            .append("respuesta", "Marte"),
 
-            new Document("pregunta", "¿Cuál es la moneda de Japón?")
-            .append("opciones", Arrays.asList("Yuan", "Won", "Yen", "Dólar"))
-            .append("respuesta", "Yen"),
+        new Document("pregunta", "¿Cuál es la moneda de Japón?")
+	        .append("opciones", Arrays.asList("Yuan", "Won", "Yen", "Dólar"))
+	        .append("respuesta", "Yen"),
 
         new Document("pregunta", "¿Qué órgano bombea la sangre?")
             .append("opciones", Arrays.asList("Pulmón", "Hígado", "Corazón", "Riñón"))
