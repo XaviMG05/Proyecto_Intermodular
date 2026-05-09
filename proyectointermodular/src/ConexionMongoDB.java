@@ -1,4 +1,3 @@
-
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
@@ -12,11 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import modelo.*;
+
 public class ConexionMongoDB {
 
 	public static void main(String[] args) {
         // Direccion de la BBDD en MongoDB
-        String uri = "mongodb+srv://jsricop:Practica3enRayaBBDDyProg@futbol3raya.jnutj7r.mongodb.net/";
+        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
 
         // Conexion
         try  {       	
@@ -31,9 +32,9 @@ public class ConexionMongoDB {
             insertarPreguntas(collectionPreguntas);
 
             // Leer jugadores
-            FindIterable<Document> jugadores = collectionPreguntas.find();
-            for (Document jugador : jugadores) {
-                System.out.println(jugador.getString("nombre"));
+            FindIterable<Document> preguntas = collectionPreguntas.find();
+            for (Document pregunta : preguntas) {
+                System.out.println(pregunta.getString("pregunta"));
             }
             System.out.println("--------------------- Preguntas mostradas--------------------- ");
             
@@ -178,5 +179,3 @@ public class ConexionMongoDB {
     System.out.println("30 preguntas insertadas correctamente");
 }
 }
-
-
