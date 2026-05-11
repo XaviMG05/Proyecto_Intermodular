@@ -1,7 +1,9 @@
+package main;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoDatabase;
 
+import modelo.Pregunta;
 
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.FindIterable;
@@ -11,11 +13,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import modelo.*;
-
 public class ConexionMongoDB {
 
-	public static void main(String[] args) {
+	public static void InicializarBaseDatos() {
         // Direccion de la BBDD en MongoDB
         String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
 
@@ -27,7 +27,6 @@ public class ConexionMongoDB {
             MongoDatabase database = mongoClient.getDatabase("Concursillo");
             MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas");
             
-            
             reiniciarColecciones(collectionPreguntas);
             insertarPreguntas(collectionPreguntas);
 
@@ -37,7 +36,6 @@ public class ConexionMongoDB {
                 System.out.println(pregunta.getString("pregunta"));
             }
             System.out.println("--------------------- Preguntas mostradas--------------------- ");
-            
            
         } catch (Exception e) {
             e.printStackTrace();
@@ -178,4 +176,38 @@ public class ConexionMongoDB {
 
     System.out.println("30 preguntas insertadas correctamente");
 }
+    
+    public static ArrayList<Pregunta> obtenerPreguntas() {
+
+    	ArrayList<Pregunta> listaPreguntas = new ArrayList<>();
+
+    	String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
+
+    	try {
+
+    		MongoClient mongoClient = MongoClients.create(uri);
+
+    		MongoDatabase database = mongoClient.getDatabase("Concursillo");
+
+    		MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas");
+
+    		FindIterable<Document> preguntas = collectionPreguntas.find();
+
+    		for(Document doc : preguntas) {
+    			String pregunta = doc.getString("pregunta");
+    			ArrayList<String> opciones = new ArrayList<>((List<String>) doc.get("opciones"));
+    			String respuesta = doc.getString("respuesta");
+
+    			Pregunta p = new Pregunta(
+    					pregunta,
+    					opciones,
+    					respuesta
+    			);
+    			listaPreguntas.add(p);
+    		}
+    	} catch(Exception e) {
+    		e.printStackTrace();
+    	}
+    	return listaPreguntas;
+    }
 }
