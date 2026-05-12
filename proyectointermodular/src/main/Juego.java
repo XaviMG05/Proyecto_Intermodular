@@ -1,7 +1,6 @@
 package main;
 
 import java.awt.Color;
-import java.awt.EventQueue;
 import java.awt.Font;
 
 import javax.swing.JButton;
@@ -12,7 +11,7 @@ import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
 
 import modelo.Pregunta;
-
+import comodines.*;
 
 public class Juego extends JFrame {
 	
@@ -24,9 +23,11 @@ public class Juego extends JFrame {
 	public JButton Respuesta4;
 	public JLabel Pregunta;
 	public JButton btnGuardar;
-
-	ArrayList<Pregunta> listaPreguntas;
-	int indicePregunta = 0;
+	public Comodin5050 comodin5050 = new Comodin5050();
+	public ComodinPista comodinPista = new ComodinPista();
+	public ComodinSkip comodinSkip = new ComodinSkip();
+	public ArrayList<Pregunta> listaPreguntas;
+	public int indicePregunta = 0;
 
 	
 	public Juego() {
@@ -51,7 +52,14 @@ public class Juego extends JFrame {
 		lblTitulo.setFont(new Font("Arial", Font.BOLD, 28));
 		lblTitulo.setBounds(257, 9, 258, 30);
 		contentPane.add(lblTitulo);
+		
+		//NOMBRE
+		JLabel jugador = new JLabel("Jugador: " + PrincipalApp.nombreJugador);
+		jugador.setForeground(Color.WHITE);
+		jugador.setBounds(120, 15, 250, 20);
 
+		contentPane.add(jugador);
+		
 		//PREGUNTA
 		Pregunta = new JLabel();
 		Pregunta.setForeground(new Color(255, 255, 255));
@@ -103,7 +111,7 @@ public class Juego extends JFrame {
 
 		//BOTON SALIR
 		JButton Salir = new JButton("X");
-		Salir.setBounds(70, 9, 45, 30);
+		Salir.setBounds(57, 9, 45, 30);
 		Salir.setBackground(new Color(200, 60, 60));
 		Salir.setForeground(Color.WHITE);
 		Salir.setFocusPainted(false);
@@ -126,25 +134,48 @@ public class Juego extends JFrame {
 		Respuesta2.addActionListener(e -> comprobarRespuesta(Respuesta2.getText()));
 		Respuesta3.addActionListener(e -> comprobarRespuesta(Respuesta3.getText()));
 		Respuesta4.addActionListener(e -> comprobarRespuesta(Respuesta4.getText()));
+		
+		//COMODINES
+		Comodin_1.addActionListener(e -> {
+		    comodin5050.usarComodin(this);
+
+		    Comodin_1.setEnabled(false);
+		    Comodin_1.setBackground(Color.DARK_GRAY);
+		    Comodin_1.setForeground(Color.LIGHT_GRAY);
+		});
+
+		Comodin_2.addActionListener(e -> {
+		    comodinPista.usarComodin(this);
+
+		    Comodin_2.setEnabled(false);
+		    Comodin_2.setBackground(Color.DARK_GRAY);
+		    Comodin_2.setForeground(Color.LIGHT_GRAY);
+		});
+
+		Comodin_3.addActionListener(e -> {
+		    comodinSkip.usarComodin(this);
+
+		    Comodin_3.setEnabled(false);
+		    Comodin_3.setBackground(Color.DARK_GRAY);
+		    Comodin_3.setForeground(Color.LIGHT_GRAY);
+		});
 	}
 		
 	public void mostrarPregunta() {
+		// VOLVER A MOSTRAR BOTONES
+		Respuesta1.setEnabled(true);
+		Respuesta2.setEnabled(true);
+		Respuesta3.setEnabled(true);
+		Respuesta4.setEnabled(true);
+
 		Pregunta p = listaPreguntas.get(indicePregunta);
 
-		Pregunta.setText(
-				p.getPregunta());
+		Pregunta.setText(p.getPregunta());
 
-		Respuesta1.setText(
-				p.getOpciones().get(0));
-
-		Respuesta2.setText(
-				p.getOpciones().get(1));
-
-		Respuesta3.setText(
-				p.getOpciones().get(2));
-
-		Respuesta4.setText(
-				p.getOpciones().get(3));
+		Respuesta1.setText(p.getOpciones().get(0));
+		Respuesta2.setText(p.getOpciones().get(1));
+		Respuesta3.setText(p.getOpciones().get(2));
+		Respuesta4.setText(p.getOpciones().get(3));
 	}
 		
 	public void comprobarRespuesta(String respuestaUsuario) {

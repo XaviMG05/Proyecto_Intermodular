@@ -1,7 +1,8 @@
 package comodines;
 
-public abstract class Comodin {
+import main.Juego;
 
+public abstract class Comodin {
 	protected String nombre;
 	protected boolean usado;
 
@@ -10,11 +11,9 @@ public abstract class Comodin {
 		this.usado = false;
 	}
 
-	public abstract void usarComodin();
+	public abstract void usarComodin(Juego juego);
 
-	@Override
-	public String toString() {
-		return "Comodin [nombre=" + nombre + ", usado=" + usado + "]";
+	public boolean isUsado() {
+		return usado;
 	}
-
 }
