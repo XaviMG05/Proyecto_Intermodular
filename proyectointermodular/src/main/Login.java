@@ -16,7 +16,7 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JButton btnConfirmar;
-
+	private JButton btnRanking; 
 	public Login() {
 
 		// CONFIGURACIÓN VENTANA
@@ -79,10 +79,10 @@ public class Login extends JFrame {
 				// GUARDAR NOMBRE
 				PrincipalApp.nombreJugador = nombreJugador;
 
-				// ABRIR JUEGO
-				Juego juego = new Juego();
+				// ABRIR MENÚ PRINCIPAL
+				MenuPrincipal menu = new MenuPrincipal();
 
-				juego.setVisible(true);
+				menu.setVisible(true);
 
 				// CERRAR LOGIN
 				dispose();

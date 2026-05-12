@@ -12,7 +12,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import modelo.*;
 public class ConexionMongoDB {
 
 	public static void InicializarBaseDatos() {
@@ -198,16 +198,71 @@ public class ConexionMongoDB {
     			ArrayList<String> opciones = new ArrayList<>((List<String>) doc.get("opciones"));
     			String respuesta = doc.getString("respuesta");
 
-    			Pregunta p = new Pregunta(
-    					pregunta,
-    					opciones,
-    					respuesta
-    			);
+    			Pregunta p = new Pregunta(pregunta,opciones,respuesta);
     			listaPreguntas.add(p);
     		}
     	} catch(Exception e) {
     		e.printStackTrace();
     	}
     	return listaPreguntas;
+    }
+    
+    public static void guardarPuntuacion(
+            String jugador,
+            int preguntasAcertadas) {
+
+        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
+
+        try (MongoClient mongoClient =
+                 MongoClients.create(uri)) {
+
+            MongoDatabase database =
+                mongoClient.getDatabase("Concursillo");
+
+            MongoCollection<Document> ranking =
+                database.getCollection("ranking");
+
+            Document doc = new Document("jugador", jugador).append("preguntas_acertadas",preguntasAcertadas);
+
+            ranking.insertOne(doc);
+
+            System.out.println("Puntuación guardada");
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    public static ArrayList<Puntuacion> obtenerRanking() {
+
+        ArrayList<Puntuacion> lista = new ArrayList<>();
+
+        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
+
+        try (MongoClient mongoClient =
+                 MongoClients.create(uri)) {
+
+            MongoDatabase database =
+                mongoClient.getDatabase("Concursillo");
+
+            MongoCollection<Document> ranking =
+                database.getCollection("ranking");
+
+            FindIterable<Document> resultados =
+                ranking.find().sort(new Document("preguntas_acertadas",-1));
+
+            for (Document doc : resultados) {
+
+                Puntuacion p = new Puntuacion(
+                    doc.getString("jugador"),
+                    doc.getInteger("preguntas_acertadas"));
+
+                lista.add(p);
+            }
+
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return lista;
     }
 }

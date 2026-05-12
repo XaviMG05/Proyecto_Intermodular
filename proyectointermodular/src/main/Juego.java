@@ -29,7 +29,7 @@ public class Juego extends JFrame {
 	public ComodinSkip comodinSkip = new ComodinSkip();
 	public ArrayList<Pregunta> listaPreguntas;
 	public int indicePregunta = 0;
-
+	public int preguntasAcertadas = 0;
 	
 	public Juego() {
 		// Configuración ventana
@@ -184,7 +184,8 @@ public class Juego extends JFrame {
 	public void comprobarRespuesta(String respuestaUsuario) {
 	    Pregunta p = listaPreguntas.get(indicePregunta);
 	    if (respuestaUsuario.equals(p.getRespuesta())) {
-	        indicePregunta++;
+	    	preguntasAcertadas++;
+	    	indicePregunta++;
 	        if (indicePregunta >= 15 || indicePregunta >= listaPreguntas.size()) {
 	            finDelJuego();
 	            return;
@@ -206,12 +207,16 @@ public class Juego extends JFrame {
 	    lbl.setForeground(Color.RED);
 	    lbl.setBounds(280, 150, 300, 50);
 
-	    JButton btn = new JButton("Volver a jugar");
+	    JButton btn = new JButton("Volver al menú");
 	    btn.setBounds(300, 250, 200, 40);
 
 	    btn.addActionListener(e -> {
+
 	        dispose();
-	        new Juego().setVisible(true);
+
+	        MenuPrincipal menu = new MenuPrincipal();
+
+	        menu.setVisible(true);
 	    });
 
 	    contentPane.add(lbl);
@@ -219,6 +224,11 @@ public class Juego extends JFrame {
 
 	    contentPane.repaint();
 	    contentPane.revalidate();
+	    
+	    ConexionMongoDB.guardarPuntuacion(
+	    	    PrincipalApp.nombreJugador,
+	    	    preguntasAcertadas
+	    	);
 	}
 	
 	public void finDelJuego() {
@@ -232,12 +242,16 @@ public class Juego extends JFrame {
 	    lbl.setForeground(Color.GREEN);
 	    lbl.setBounds(280, 150, 300, 50);
 
-	    JButton btn = new JButton("Volver a jugar");
+	    JButton btn = new JButton("Volver al menú");
 	    btn.setBounds(300, 250, 200, 40);
 
 	    btn.addActionListener(e -> {
+
 	        dispose();
-	        new Juego().setVisible(true);
+
+	        MenuPrincipal menu = new MenuPrincipal();
+
+	        menu.setVisible(true);
 	    });
 
 	    contentPane.add(lbl);
@@ -245,5 +259,10 @@ public class Juego extends JFrame {
 
 	    contentPane.repaint();
 	    contentPane.revalidate();
+
+	    ConexionMongoDB.guardarPuntuacion(
+	            PrincipalApp.nombreJugador,
+	            preguntasAcertadas
+	    );
 	}
 }
