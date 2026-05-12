@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import modelo.Pregunta;
 import comodines.*;
@@ -126,6 +127,8 @@ public class Juego extends JFrame {
 		listaPreguntas = ConexionMongoDB.obtenerPreguntas();
 
 		if (listaPreguntas != null && !listaPreguntas.isEmpty()) {
+			Collections.shuffle(listaPreguntas);
+			listaPreguntas = new ArrayList<>(listaPreguntas.subList(0, 15));
 			mostrarPregunta();
 		}
 
@@ -179,26 +182,68 @@ public class Juego extends JFrame {
 	}
 		
 	public void comprobarRespuesta(String respuestaUsuario) {
+	    Pregunta p = listaPreguntas.get(indicePregunta);
+	    if (respuestaUsuario.equals(p.getRespuesta())) {
+	        indicePregunta++;
+	        if (indicePregunta >= 15 || indicePregunta >= listaPreguntas.size()) {
+	            finDelJuego();
+	            return;
+	        }
+	        mostrarPregunta();
+	    } else {
+	        gameOver();
+	    }
+	}
+	
+	public void gameOver() {
 
-		Pregunta p = listaPreguntas.get(indicePregunta);
-		if(respuestaUsuario.equals(p.getRespuesta())) {
-			System.out.println("CORRECTA");
-		} else {
-			System.out.println("INCORRECTA");
-		}
+	    contentPane.removeAll();
+	    contentPane.repaint();
+	    contentPane.revalidate();
 
-		indicePregunta++;
+	    JLabel lbl = new JLabel("¡PERDISTE!");
+	    lbl.setFont(new Font("Arial", Font.BOLD, 40));
+	    lbl.setForeground(Color.RED);
+	    lbl.setBounds(280, 150, 300, 50);
 
-		if(indicePregunta < listaPreguntas.size()) {
-			mostrarPregunta();
-		} else {
+	    JButton btn = new JButton("Volver a jugar");
+	    btn.setBounds(300, 250, 200, 40);
 
-			Pregunta.setText("FIN DEL JUEGO");
-			
-			Respuesta1.setVisible(false);
-			Respuesta2.setVisible(false);
-			Respuesta3.setVisible(false);
-			Respuesta4.setVisible(false);
-		}
+	    btn.addActionListener(e -> {
+	        dispose();
+	        new Juego().setVisible(true);
+	    });
+
+	    contentPane.add(lbl);
+	    contentPane.add(btn);
+
+	    contentPane.repaint();
+	    contentPane.revalidate();
+	}
+	
+	public void finDelJuego() {
+
+	    contentPane.removeAll();
+	    contentPane.repaint();
+	    contentPane.revalidate();
+
+	    JLabel lbl = new JLabel("¡GANASTE!");
+	    lbl.setFont(new Font("Arial", Font.BOLD, 40));
+	    lbl.setForeground(Color.GREEN);
+	    lbl.setBounds(280, 150, 300, 50);
+
+	    JButton btn = new JButton("Volver a jugar");
+	    btn.setBounds(300, 250, 200, 40);
+
+	    btn.addActionListener(e -> {
+	        dispose();
+	        new Juego().setVisible(true);
+	    });
+
+	    contentPane.add(lbl);
+	    contentPane.add(btn);
+
+	    contentPane.repaint();
+	    contentPane.revalidate();
 	}
 }
