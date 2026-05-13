@@ -94,6 +94,17 @@ public class Juego extends JFrame {
 		Respuesta4.setBounds(440, 310, 300, 40);
 		contentPane.add(Respuesta4);
 
+		//BOTON RONDA
+		JButton btnRondas = new JButton("€");
+		btnRondas.setFont(new Font("Dialog", Font.PLAIN, 16));
+		btnRondas.setBounds(10, 9, 45, 30);
+		contentPane.add(btnRondas);
+		
+		btnRondas.addActionListener(e -> {this.setVisible(false);
+		    Ronda r = new Ronda(this);
+		    r.setVisible(true);
+		});
+		
 		//BOTONES COMODINES
 		JButton Comodin_1 = new JButton("50%");
 		Comodin_1.setBounds(675, 9, 65, 30);
@@ -112,7 +123,7 @@ public class Juego extends JFrame {
 
 		//BOTON SALIR
 		JButton Salir = new JButton("X");
-		Salir.setBounds(57, 9, 45, 30);
+		Salir.setBounds(65, 9, 45, 30);
 		Salir.setBackground(new Color(200, 60, 60));
 		Salir.setForeground(Color.WHITE);
 		Salir.setFocusPainted(false);
