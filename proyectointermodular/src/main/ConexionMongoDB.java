@@ -177,90 +177,66 @@ public class ConexionMongoDB {
     System.out.println("30 preguntas insertadas correctamente");
 }
     
-    public static ArrayList<Pregunta> obtenerPreguntas() {
-
-    	ArrayList<Pregunta> listaPreguntas = new ArrayList<>();
-
-    	String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
-
-    	try {
-
-    		MongoClient mongoClient = MongoClients.create(uri);
-
-    		MongoDatabase database = mongoClient.getDatabase("Concursillo");
-
-    		MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas");
-
-    		FindIterable<Document> preguntas = collectionPreguntas.find();
-
-    		for(Document doc : preguntas) {
-    			String pregunta = doc.getString("pregunta");
-    			ArrayList<String> opciones = new ArrayList<>((List<String>) doc.get("opciones"));
-    			String respuesta = doc.getString("respuesta");
-
-    			Pregunta p = new Pregunta(pregunta,opciones,respuesta);
-    			listaPreguntas.add(p);
-    		}
-    	} catch(Exception e) {
-    		e.printStackTrace();
-    	}
-    	return listaPreguntas;
-    }
-    
-    public static void guardarPuntuacion(
-            String jugador,
-            int preguntasAcertadas) {
-
+    public static ArrayList<Pregunta> obtenerPreguntas() { // Método que obtiene todas las preguntas almacenadas en la base de datos y las devuelve en una lista
+        ArrayList<Pregunta> listaPreguntas = new ArrayList<>(); // Lista donde se almacenarán los objetos Pregunta creados desde MongoDB
         String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
 
-        try (MongoClient mongoClient =
-                 MongoClients.create(uri)) {
+        try {
+            MongoClient mongoClient = MongoClients.create(uri); // Se establece conexión con MongoDB
+            MongoDatabase database = mongoClient.getDatabase("Concursillo"); // Se selecciona la base de datos
+            MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas"); // Se accede a la colección de preguntas
+            FindIterable<Document> preguntas = collectionPreguntas.find(); // Se obtienen todos los documentos de la colección
 
-            MongoDatabase database =
-                mongoClient.getDatabase("Concursillo");
-
-            MongoCollection<Document> ranking =
-                database.getCollection("ranking");
-
-            Document doc = new Document("jugador", jugador).append("preguntas_acertadas",preguntasAcertadas);
-
-            ranking.insertOne(doc);
-
-            System.out.println("Puntuación guardada");
-
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-    }
-    public static ArrayList<Puntuacion> obtenerRanking() {
-
-        ArrayList<Puntuacion> lista = new ArrayList<>();
-
-        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
-
-        try (MongoClient mongoClient =
-                 MongoClients.create(uri)) {
-
-            MongoDatabase database =
-                mongoClient.getDatabase("Concursillo");
-
-            MongoCollection<Document> ranking =
-                database.getCollection("ranking");
-
-            FindIterable<Document> resultados =
-                ranking.find().sort(new Document("preguntas_acertadas",-1));
-
-            for (Document doc : resultados) {
-
-                Puntuacion p = new Puntuacion(
-                    doc.getString("jugador"),
-                    doc.getInteger("preguntas_acertadas"));
-
-                lista.add(p);
+            for (Document doc : preguntas) { // Se recorre cada documento recuperado de MongoDB
+                String pregunta = doc.getString("pregunta"); // Se obtiene el texto de la pregunta
+                ArrayList<String> opciones = new ArrayList<>((List<String>) doc.get("opciones")); // Se convierten las opciones a ArrayList
+                String respuesta = doc.getString("respuesta"); // Se obtiene la respuesta correcta
+                Pregunta p = new Pregunta(pregunta, opciones, respuesta); // Se crea el objeto Pregunta con los datos obtenidos
+                listaPreguntas.add(p); // Se añade la pregunta a la lista final
             }
 
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch (Exception e) { // Captura cualquier error durante la conexión o lectura de datos
+            e.printStackTrace(); // Imprime el error para depuración
+        }
+
+        return listaPreguntas; // Devuelve la lista completa de preguntas
+    }
+    
+    public static void guardarPuntuacion(String jugador, int preguntasAcertadas) {
+        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
+        try (MongoClient mongoClient = MongoClients.create(uri)) { // Se crea la conexión a MongoDB y se cierra automáticamente al finalizar el bloque try
+            MongoDatabase database = mongoClient.getDatabase("Concursillo");
+            MongoCollection<Document> ranking = database.getCollection("ranking"); // Se accede a la colección "ranking"
+            
+            Document filtro = new Document("jugador", jugador); // Filtro para buscar si ya existe un jugador con ese nombre
+            Document actualizacion = new Document("$set", new Document("preguntas_acertadas", preguntasAcertadas)); // Define la actualización de la puntuación usando operador $set
+            ranking.updateOne(filtro, actualizacion, new com.mongodb.client.model.UpdateOptions().upsert(true)); // Si el jugador existe lo actualiza, si no existe lo crea (upsert)
+            System.out.println("Puntuación guardada");
+        } catch(Exception e) { // Captura cualquier error durante la conexión o actualización
+            e.printStackTrace(); // Imprime el error para depuración
+        }
+    }
+    public static ArrayList<Puntuacion> obtenerRanking() { // Método que obtiene el ranking de jugadores desde MongoDB ordenado por puntuación
+        ArrayList<Puntuacion> lista = new ArrayList<>(); // Lista donde se almacenarán los objetos Puntuacion
+
+        String uri = "mongodb+srv://gonzalezlopezpablojorge_db_user:Admin.2026@concursillo.6tlfmeb.mongodb.net/?appName=Concursillo";
+
+        try (MongoClient mongoClient = MongoClients.create(uri)) { // Conexión a MongoDB
+            MongoDatabase database = mongoClient.getDatabase("Concursillo"); // Selección de la base de datos
+            MongoCollection<Document> ranking = database.getCollection("ranking"); // Acceso a la colección ranking
+
+            FindIterable<Document> resultados = ranking.find().sort(new Document("preguntas_acertadas", -1)); // Obtiene todos los documentos ordenados de mayor a menor puntuación
+
+            for (Document doc : resultados) { // Recorre cada documento del ranking
+                Puntuacion p = new Puntuacion( // Crea un objeto Puntuacion con los datos del documento
+                    doc.getString("jugador"),
+                    doc.getInteger("preguntas_acertadas")
+                );
+                lista.add(p); // Añade la puntuación a la lista final
+            }
+
+        } catch (Exception e) { // Captura cualquier error en la consulta o conexión
+            e.printStackTrace(); // Imprime el error para depuración
         }
 
         return lista;

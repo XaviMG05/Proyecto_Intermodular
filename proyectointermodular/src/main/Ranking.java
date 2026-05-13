@@ -38,46 +38,32 @@ public class Ranking extends JFrame {
 
         // TITULO
         JLabel lblTitulo = new JLabel("RANKING");
-
         lblTitulo.setForeground(Color.WHITE);
-
-        lblTitulo.setFont(new Font("Arial", Font.BOLD, 32)
-        );
-
+        lblTitulo.setFont(new Font("Arial", Font.BOLD, 32));
         lblTitulo.setBounds(250, 20, 250, 40);
 
         contentPane.add(lblTitulo);
 
         // TABLA
         modeloTabla = new DefaultTableModel();
-
         modeloTabla.addColumn("POSICIÓN");
         modeloTabla.addColumn("JUGADOR");
         modeloTabla.addColumn("ACIERTOS");
 
         tablaRanking = new JTable(modeloTabla);
-
         tablaRanking.setRowHeight(30);
-
         tablaRanking.setFont(new Font("Arial", Font.PLAIN, 16));
-
         tablaRanking.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-
         JScrollPane scrollPane = new JScrollPane(tablaRanking);
-
         scrollPane.setBounds(80, 90, 520, 280);
 
         contentPane.add(scrollPane);
 
         // BOTON
         JButton btnCerrar = new JButton("CERRAR");
-
         btnCerrar.setBounds(260, 400, 150, 40);
-
         btnCerrar.setFont(new Font("Arial", Font.BOLD, 18));
-
         contentPane.add(btnCerrar);
-
         btnCerrar.addActionListener(e -> {
         	dispose();
         });
@@ -87,21 +73,15 @@ public class Ranking extends JFrame {
     }
 
     public void cargarRanking() {
-
         ArrayList<Puntuacion> lista = ConexionMongoDB.obtenerRanking();
-
         modeloTabla.setRowCount(0);
-
         int posicion = 1;
-
         for (Puntuacion p : lista) {
-
             modeloTabla.addRow(new Object[] {
                 posicion,
                 p.getJugador(),
                 p.getPreguntasAcertadas()
             });
-
             posicion++;
         }
     }
