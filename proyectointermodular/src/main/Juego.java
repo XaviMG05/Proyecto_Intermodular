@@ -23,7 +23,6 @@ public class Juego extends JFrame {
 	public JButton Respuesta3;
 	public JButton Respuesta4;
 	public JLabel Pregunta;
-	public JButton btnGuardar;
 	public Comodin5050 comodin5050 = new Comodin5050();
 	public ComodinPista comodinPista = new ComodinPista();
 	public ComodinSkip comodinSkip = new ComodinSkip();

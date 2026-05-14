@@ -27,7 +27,7 @@ public class ConexionMongoDB {
             MongoDatabase database = mongoClient.getDatabase("Concursillo");
             MongoCollection<Document> collectionPreguntas = database.getCollection("preguntas");
             
-            reiniciarColecciones(collectionPreguntas);
+            
             insertarPreguntas(collectionPreguntas);
 
             // Leer jugadores
@@ -42,11 +42,7 @@ public class ConexionMongoDB {
         }
     }
 	
-	// Metodo para limpiar las colecciones
-    public static void reiniciarColecciones(MongoCollection<Document> collectionPreguntas) {
-    	collectionPreguntas.deleteMany(new Document()); // Elimina todas las preguntas
-   
-    }
+	
      
     //Metodo para insertar preguntas
     public static void insertarPreguntas(MongoCollection<Document> collectionPreguntas) {

@@ -15,11 +15,13 @@ import javax.swing.table.DefaultTableModel;
 import modelo.Puntuacion;
 
 public class Ranking extends JFrame {
-
+	// COMPONENTES
     private JPanel contentPane;
     private JTable tablaRanking;
     private DefaultTableModel modeloTabla;
-
+    private JLabel lblTitulo;
+    private JButton btnCerrar;
+    
     public Ranking() {
 
         // VENTANA
@@ -37,7 +39,7 @@ public class Ranking extends JFrame {
         setContentPane(contentPane);
 
         // TITULO
-        JLabel lblTitulo = new JLabel("RANKING");
+        lblTitulo = new JLabel("RANKING");
         lblTitulo.setForeground(Color.WHITE);
         lblTitulo.setFont(new Font("Arial", Font.BOLD, 32));
         lblTitulo.setBounds(250, 20, 250, 40);
@@ -59,8 +61,8 @@ public class Ranking extends JFrame {
 
         contentPane.add(scrollPane);
 
-        // BOTON
-        JButton btnCerrar = new JButton("CERRAR");
+        // BOTON CERRAR
+        btnCerrar = new JButton("CERRAR");
         btnCerrar.setBounds(260, 400, 150, 40);
         btnCerrar.setFont(new Font("Arial", Font.BOLD, 18));
         contentPane.add(btnCerrar);

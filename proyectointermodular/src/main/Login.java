@@ -16,9 +16,8 @@ public class Login extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtNombre;
 	private JButton btnConfirmar;
-	private JButton btnRanking; 
+	
 	public Login() {
-
 		// CONFIGURACIÓN VENTANA
 		setTitle("Registro");
 		setSize(1000, 700);
@@ -70,10 +69,7 @@ public class Login extends JFrame {
 
 			// VALIDAR
 			if(nombreJugador.isEmpty()) {
-
-				JOptionPane.showMessageDialog(null,
-						"Ingrese un nombre");
-
+				JOptionPane.showMessageDialog(null, "Ingrese un nombre");
 			} else {
 
 				// GUARDAR NOMBRE
@@ -81,7 +77,6 @@ public class Login extends JFrame {
 
 				// ABRIR MENÚ PRINCIPAL
 				MenuPrincipal menu = new MenuPrincipal();
-
 				menu.setVisible(true);
 
 				// CERRAR LOGIN
